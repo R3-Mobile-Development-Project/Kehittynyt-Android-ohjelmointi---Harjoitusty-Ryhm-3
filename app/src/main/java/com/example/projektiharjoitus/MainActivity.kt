@@ -1,20 +1,24 @@
 package com.example.projektiharjoitus
 
-import android.Manifest
 import android.content.pm.PackageManager
+import android.location.Address
+import android.location.Geocoder
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
 import android.widget.Button
-import okhttp3.Call
-import okhttp3.Callback
-import okhttp3.Response
-import java.io.IOException
+import android.widget.EditText
+import com.google.android.gms.maps.MapView
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
 
 class MainActivity : AppCompatActivity() {
     private val weatherService = WeatherService()
+    private lateinit var googleMap: GoogleMap
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,19 +32,53 @@ class MainActivity : AppCompatActivity() {
 
         val weatherInfoTextView = findViewById<TextView>(R.id.weatherInfoTextView)
         val fetchWeatherButton = findViewById<Button>(R.id.fetchWeatherButton)
+        val cityInputEditText = findViewById<EditText>(R.id.cityInputEditText)
+
+
+
 
         fetchWeatherButton.setOnClickListener {
-            // Example: Request weather data for a specific city
-            weatherService.getWeatherData("Boston") { weatherData ->
-                // Handle the weather data, update UI, etc.
-                runOnUiThread {
-                    // Update the UI with the weather data
-                    val weatherInfo =
-                        "Temperature: ${weatherData.temperature} °C\nDescription: ${weatherData.description}"
-                    weatherInfoTextView.text = weatherInfo
+            val city = cityInputEditText.text.toString()
+            if (city.isNotEmpty()) {
+
+                /*
+                // Use Geocoder to get the coordinates for the entered city
+                val geocoder = Geocoder(this)
+                val addresses: List<Address> = geocoder.getFromLocationName(city, 1) ?: emptyList()
+                val immutableAddresses = addresses.toList() // Convert to an immutable list
+
+                if (immutableAddresses.isNotEmpty()) {
+                    val location = immutableAddresses[0]
+                    val latitude = location.latitude
+                    val longitude = location.longitude
+
+                    // Move the camera to the specified location on the map
+                    val cityLocation = LatLng(latitude, longitude)
+                    googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(cityLocation, 10f))
+*/
+                    weatherService.getWeatherData(city) { weatherData ->
+                        // Handle the weather data, update UI, etc.
+                        runOnUiThread {
+                            // Update the UI with the weather data
+                            val weatherInfo =
+                                "Temperature: ${weatherData.formattedTemperature} °C\nDescription: ${weatherData.description} \nHumidity: ${weatherData.humidity}%"
+                            weatherInfoTextView.text = weatherInfo
+                        }
+                    }
+                }
+            /*
+            else {
+                    // Handle case where the geocoding didn't find the location
+                    weatherInfoTextView.text = "Location not found."
                 }
             }
+            */
+            else {
+                // Handle case when the city input is empty
+                weatherInfoTextView.text = "Please enter a city."
+            }
         }
+
     }
 
     // Handle the result of the permission request (use appropriate code)

@@ -23,4 +23,20 @@
         android:text="Fetch Weather"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="16dp" />
+
+    <EditText
+        android:id="@+id/cityInputEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter City"
+        android:inputType="text"
+        android:layout_marginTop="16dp"/>
+
+    <fragment
+        class="com.google.android.gms.maps.SupportMapFragment"
+        android:id="@+id/map_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+
 </LinearLayout>

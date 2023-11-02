@@ -28,6 +28,7 @@ class WeatherService {
                     val responseString = response.body?.string()
                     val weatherData = parseWeatherData(responseString)
                     callback(weatherData)
+
                 } else {
                     // Handle non-successful response
                 }
