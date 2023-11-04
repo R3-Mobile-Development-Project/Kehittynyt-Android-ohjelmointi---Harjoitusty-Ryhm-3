@@ -4,6 +4,8 @@ import androidx.compose.foundation.pager.PageSize
 import java.text.DecimalFormat
 
 data class WeatherData(
+    val latitude: Double,
+    val longitude: Double,
     val temperature: Double,
     val humidity: Int,
     val description: String,

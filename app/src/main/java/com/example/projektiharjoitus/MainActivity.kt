@@ -7,9 +7,11 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.InputType
 import android.widget.TextView
 import android.widget.Button
 import android.widget.EditText
+import androidx.fragment.app.Fragment
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -19,10 +21,17 @@ import com.google.android.gms.maps.model.LatLng
 class MainActivity : AppCompatActivity() {
     private val weatherService = WeatherService()
     private lateinit var googleMap: GoogleMap
+    private lateinit var mapFragment: SupportMapFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        // Find the SupportMapFragment
+        mapFragment = supportFragmentManager.findFragmentById(R.id.map_fragment) as SupportMapFragment
+        mapFragment.getMapAsync { map ->
+            googleMap = map
+        }
 
         // Check for and request permissions (use appropriate code)
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
@@ -34,48 +43,36 @@ class MainActivity : AppCompatActivity() {
         val fetchWeatherButton = findViewById<Button>(R.id.fetchWeatherButton)
         val cityInputEditText = findViewById<EditText>(R.id.cityInputEditText)
 
-
-
+        // Set the input type to capitalize sentences
+        cityInputEditText.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_FLAG_CAP_SENTENCES
 
         fetchWeatherButton.setOnClickListener {
             val city = cityInputEditText.text.toString()
             if (city.isNotEmpty()) {
-
-                /*
-                // Use Geocoder to get the coordinates for the entered city
-                val geocoder = Geocoder(this)
-                val addresses: List<Address> = geocoder.getFromLocationName(city, 1) ?: emptyList()
-                val immutableAddresses = addresses.toList() // Convert to an immutable list
-
-                if (immutableAddresses.isNotEmpty()) {
-                    val location = immutableAddresses[0]
-                    val latitude = location.latitude
-                    val longitude = location.longitude
-
-                    // Move the camera to the specified location on the map
-                    val cityLocation = LatLng(latitude, longitude)
-                    googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(cityLocation, 10f))
-*/
                     weatherService.getWeatherData(city) { weatherData ->
                         // Handle the weather data, update UI, etc.
                         runOnUiThread {
-                            // Update the UI with the weather data
-                            val weatherInfo =
-                                "Temperature: ${weatherData.formattedTemperature} °C\nDescription: ${weatherData.description} \nHumidity: ${weatherData.humidity}%"
-                            weatherInfoTextView.text = weatherInfo
+                            if (weatherData.latitude != 0.0 && weatherData.longitude != 0.0) {
+                                // Update the UI with the weather data
+                                val weatherInfo =
+                                    "Temperature: ${weatherData.formattedTemperature} °C\nDescription: ${weatherData.description} \nHumidity: ${weatherData.humidity}%"
+                                weatherInfoTextView.text = weatherInfo
+
+                                val cityLocation = LatLng(weatherData.latitude, weatherData.longitude)
+                                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(cityLocation,12f))
+                            } else {
+                                // Handle case when the location is not found
+                                weatherInfoTextView.text = "Location not found."
+                                // Clear the map
+                                googleMap.clear()
+                            }
                         }
                     }
-                }
-            /*
-            else {
-                    // Handle case where the geocoding didn't find the location
-                    weatherInfoTextView.text = "Location not found."
-                }
-            }
-            */
-            else {
+                } else {
                 // Handle case when the city input is empty
                 weatherInfoTextView.text = "Please enter a city."
+                // Clear the map
+                googleMap.clear()
             }
         }
 
@@ -94,4 +91,5 @@ class MainActivity : AppCompatActivity() {
         }
     }
 }
+
 

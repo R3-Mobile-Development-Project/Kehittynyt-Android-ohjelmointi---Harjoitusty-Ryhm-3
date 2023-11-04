@@ -7,6 +7,24 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
+
+    <EditText
+        android:id="@+id/cityInputEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter Location"
+        android:inputType="text"
+        android:layout_marginTop="16dp"/>
+
+    <Button
+        android:id="@+id/fetchWeatherButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Fetch Weather"
+        android:layout_gravity="center_horizontal"
+        android:background="@color/quantum_lightblue100"
+        android:layout_marginTop="16dp" />
+
     <TextView
         android:id="@+id/weatherInfoTextView"
         android:layout_width="wrap_content"
@@ -15,22 +33,6 @@
         android:textSize="16sp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="16dp" />
-
-    <Button
-        android:id="@+id/fetchWeatherButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Fetch Weather"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="16dp" />
-
-    <EditText
-        android:id="@+id/cityInputEditText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Enter City"
-        android:inputType="text"
-        android:layout_marginTop="16dp"/>
 
     <fragment
         class="com.google.android.gms.maps.SupportMapFragment"
