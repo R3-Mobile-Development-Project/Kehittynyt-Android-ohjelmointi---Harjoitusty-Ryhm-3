@@ -28,6 +28,7 @@ class WeatherService {
                     val responseString = response.body?.string()
                     val weatherData = parseWeatherData(responseString)
                     callback(weatherData)
+
                 } else {
                     // Handle non-successful response
                 }
@@ -39,7 +40,7 @@ class WeatherService {
         // Ensure responseString is not null or empty
         if (responseString.isNullOrEmpty()) {
             // Handle the case where the response is empty or null
-            return WeatherData(0.0, 0, "No Data")
+            return WeatherData(0.0, 0.0, 0.0, 0, "No Data") // Initialize latitude and longitude to 0.0
         }
 
         try {
@@ -53,12 +54,17 @@ class WeatherService {
             val weatherObject = weatherArray.getJSONObject(0)
             val description = weatherObject.getString("description")
 
+            // Extract latitude and longitude
+            val coord = jsonObject.getJSONObject("coord")
+            val latitude = coord.getDouble("lat")
+            val longitude = coord.getDouble("lon")
+
             // Create a WeatherData object and return it
-            return WeatherData(temperature, humidity, description)
+            return WeatherData(latitude, longitude, temperature, humidity, description)
         } catch (e: Exception) {
             // Handle any parsing exceptions
             e.printStackTrace()
-            return WeatherData(0.0, 0, "Parsing Error")
+            return WeatherData(0.0, 0.0, 0.0, 0, "Parsing Error")
         }
     }
 }
