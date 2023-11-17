@@ -22,6 +22,8 @@ class MainActivity : AppCompatActivity() {
     private val weatherService = WeatherService()
     private lateinit var googleMap: GoogleMap
     private lateinit var mapFragment: SupportMapFragment
+    private var previousLocation: LatLng? = null
+    private var previousCity: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,35 +49,51 @@ class MainActivity : AppCompatActivity() {
         cityInputEditText.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_FLAG_CAP_SENTENCES
 
         fetchWeatherButton.setOnClickListener {
-            val city = cityInputEditText.text.toString()
+            val city = cityInputEditText.text.toString().trim()
             if (city.isNotEmpty()) {
+                // Check if the city has changed
+                if (previousCity == null || city != previousCity) {
+                    try {
                     weatherService.getWeatherData(city) { weatherData ->
                         // Handle the weather data, update UI, etc.
                         runOnUiThread {
-                            if (weatherData.latitude != 0.0 && weatherData.longitude != 0.0) {
-                                // Update the UI with the weather data
-                                val weatherInfo =
-                                    "Temperature: ${weatherData.formattedTemperature} °C\nDescription: ${weatherData.description} \nHumidity: ${weatherData.humidity}%"
-                                weatherInfoTextView.text = weatherInfo
+                            val newLocation = LatLng(weatherData.latitude, weatherData.longitude)
 
-                                val cityLocation = LatLng(weatherData.latitude, weatherData.longitude)
-                                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(cityLocation,12f))
+                            // Check if temperature is -273
+                            val weatherInfo = if (weatherData.formattedTemperature == "-273") {
+                                "${weatherData.description}"
                             } else {
-                                // Handle case when the location is not found
-                                weatherInfoTextView.text = "Location not found."
-                                // Clear the map
-                                googleMap.clear()
+                                "Temperature: ${weatherData.formattedTemperature} °C\nDescription: ${weatherData.description} \nHumidity: ${weatherData.humidity}%"
                             }
+
+                            // Update the UI with the weather data
+                            weatherInfoTextView.text = weatherInfo
+
+                            // Move the camera to the new location
+                            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(newLocation, 12f))
+
+                            // Update the previous city
+                            previousCity = city
                         }
                     }
+                    } catch (error: Exception) {
+                        // Handle the error (e.g., show an error message to the user)
+                        weatherInfoTextView.text = "Location not found"
+                        googleMap.clear()
+                    }
                 } else {
+                    // Handle case when the city is the same as the previous search
+                    weatherInfoTextView.text = "Location is the same as the previous search."
+                    // Clear the map
+                    googleMap.clear()
+                }
+            } else {
                 // Handle case when the city input is empty
-                weatherInfoTextView.text = "Please enter a city."
+                weatherInfoTextView.text = "Please enter a location."
                 // Clear the map
                 googleMap.clear()
             }
         }
-
     }
 
     // Handle the result of the permission request (use appropriate code)

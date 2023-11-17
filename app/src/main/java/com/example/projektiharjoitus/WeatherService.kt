@@ -31,6 +31,7 @@ class WeatherService {
 
                 } else {
                     // Handle non-successful response
+                    callback(WeatherData(0.0, 0.0, 0.0, 0, "Location not found"))
                 }
             }
         })
