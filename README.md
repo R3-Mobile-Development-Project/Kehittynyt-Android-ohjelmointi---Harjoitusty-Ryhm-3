@@ -8,7 +8,7 @@ MeteorMap on moderni säänhaku- ja karttasovellus, joka on kehitetty käyttäen
 - Käyttäjäystävällinen Käyttöliittymä: Helppokäyttöinen ja intuitiivinen käyttöliittymä, joka mahdollistaa nopeat sää- ja paikkahaut.
 - Monipuoliset Hakutoiminnot: Hae kaupunkeja, maita ja alueita sekä näe niihin liittyvät säätiedot ja kartat.
 - Automaattinen Päivitys: Säätiedote ja kartta päivittyvät automaattisesti uuden haun yhteydessä.
-##Käyttöohjeet
+## Käyttöohjeet
 - Asenna Sovellus.
 - Avaa Sovellus: Käynnistä sovellus ja tutustu aloitusnäyttöön.
 - Hae Sijaintia: Kirjoita haluamasi kaupungin tai maan nimi hakupalkkiin.
