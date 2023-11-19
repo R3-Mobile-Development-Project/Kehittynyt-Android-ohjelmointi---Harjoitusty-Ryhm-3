@@ -1,6 +1,7 @@
 # MeteorMap
 ## Johdanto
 MeteorMap on moderni säänhaku- ja karttasovellus, joka on kehitetty käyttäen Kotlin-ohjelmointikieltä Android Studiolla. Sovellus tarjoaa käyttäjille kattavat sääennusteet ja yksityiskohtaiset karttanäkymät yhdistäen OpenWeather API:n ja Google Maps API:n ominaisuudet.
+Sovellus on kehitetty syksyllä 2023 harjoitustyönä kurssille "Kehittynyt Android-ohjelmointi"
 
 ## Ominaisuudet
 - Sääennusteet: Hanki ajankohtaiset säätiedot mistä tahansa maailman kaupungista tai maasta OpenWeather API:n kautta.
@@ -22,3 +23,10 @@ MeteorMap on moderni säänhaku- ja karttasovellus, joka on kehitetty käyttäen
 ## Tuki ja Yhteydenotto
 Jos sinulla on kysyttävää tai tarvitset teknistä tukea, voit ottaa yhteyttä kehittäjiin.
 
+## Kehittäjät
+### TVT22KMO - Ryhmä 3
+- Niko Kolehmainen
+- Anssi Kulotie
+- Miikka Tyvelä
+- Hannu Väliahde
+#### Yhteydenotto sähköpostitse: qrkoodimonster@gmail.com
