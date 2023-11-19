@@ -18,8 +18,8 @@ Sovellus on kehitetty syksyllä 2023 harjoitustyönä kurssille "Kehittynyt Andr
 - Kehitysympäristö: Android Studio
 - Ohjelmointikieli: Kotlin
 - Ulkoiset API:t:
-- Sääennusteet: OpenWeather API
--Karttapalvelu: Google Maps API
+  - Sääennusteet: OpenWeather API
+  - Karttapalvelu: Google Maps API
 ## Tuki ja Yhteydenotto
 Jos sinulla on kysyttävää tai tarvitset teknistä tukea, voit ottaa yhteyttä kehittäjiin.
 
